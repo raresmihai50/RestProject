@@ -1,0 +1,18 @@
+{
+    "java.project.sourcePaths": [
+        "app/src/main/java/restproject"
+    ],
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5433,
+            "driver": "PostgreSQL",
+            "name": "restproject",
+            "database": "restproject_database",
+            "username": "restproject_user",
+            "password": "1221"
+        }
+    ]
+}

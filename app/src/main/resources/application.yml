@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/restproject_database
+    username: restproject_user
+    password: 1221
+    driver-class-name: org.postgresql.Driver
