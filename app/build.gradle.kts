@@ -18,8 +18,6 @@ repositories {
 }
 
 dependencies {
-    // Librăria pentru trimis email-uri
-    implementation("org.springframework.boot:spring-boot-starter-mail")
 
     //implementation ("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-security")
