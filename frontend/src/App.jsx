@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import './App.css';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
     <Router>
-      <div className="app-container">
-        <Routes>
-          {/* Când intri pe site, te trimite direct la Login */}
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </Router>
   );
 }
