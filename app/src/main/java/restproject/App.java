@@ -36,7 +36,7 @@ public class App {
             
             try {
                 // Încercăm să creăm un user de test
-                userService.registerUser("rares_test", "rares@test.com", "parola_mea_secreta");
+                userService.registerUser("rares", "rares@exemplu.ro", "1221");
                 System.out.println("Utilizatorul a fost creat cu succes!");
             } catch (Exception e) {
                 System.out.println("Eroare la test: " + e.getMessage());
