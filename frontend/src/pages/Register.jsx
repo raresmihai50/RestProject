@@ -54,6 +54,7 @@ function Register() {
               value={username} 
               onChange={(e) => setUsername(e.target.value)} 
               placeholder="ex: raresmihai" 
+              maxLength="50"
               required 
             />
           </div>
@@ -66,6 +67,7 @@ function Register() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               placeholder="nume@exemplu.ro" 
+              maxLength="255"
               required 
             />
           </div>
@@ -78,6 +80,7 @@ function Register() {
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               placeholder="••••••••" 
+              maxLength="128"
               required 
               /* Am șters linia cu minLength="6" de aici! Acum acceptă orice parolă. */
             />

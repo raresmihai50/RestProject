@@ -54,6 +54,7 @@ function Login() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               placeholder="nume@exemplu.ro" 
+              maxLength="255"
               required 
             />
           </div>
@@ -66,6 +67,7 @@ function Login() {
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
               placeholder="••••••••" 
+              maxLength="128"
               required 
             />
           </div>

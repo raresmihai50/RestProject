@@ -64,11 +64,12 @@
   margin-bottom: 20px;
 }
 
-.info-group {
+/* --- Informații Cont --- */
+.dash-info-group {
   margin-bottom: 15px;
 }
 
-.info-group label {
+.dash-info-group label {
   display: block;
   font-size: 13px;
   color: #a0aec0;
@@ -77,9 +78,92 @@
   font-weight: bold;
 }
 
-.info-group p {
+.dash-info-group p {
   margin: 5px 0 0 0;
   font-size: 18px;
   color: #2d3748;
   font-weight: 500;
+}
+
+/* --- Formular Actualizare (Izolat de Login) --- */
+.dash-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.dash-form-group label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.dash-form-control {
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #f8fafc;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, background-color 0.2s;
+  color: black;
+}
+
+.dash-form-control:focus {
+  border-color: #4299e1;
+  background-color: #ffffff;
+}
+
+/* --- Buton Salvare Modificări --- */
+.btn-save {
+  width: 100%;
+  background-color: #48bb78; /* O nuanță verde pentru Update */
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #38a169;
+}
+
+.btn-save:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn-save:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+/* --- Alerte de eroare/succes specifice Dashboard --- */
+.dash-alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dash-alert-error {
+  background-color: #fed7d7;
+  color: #c53030;
+  border: 1px solid #feb2b2;
+}
+
+.dash-alert-success {
+  background-color: #c6f6d5;
+  color: #2f855a;
+  border: 1px solid #9ae6b4;
 }
