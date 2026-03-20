@@ -18,6 +18,10 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
+  //pentru ștergere cont
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+
   useEffect(() => {
     const fetchUserData = async () => {
       const email = localStorage.getItem('userEmail');
@@ -80,6 +84,35 @@ function Dashboard() {
       setError(err.response?.data?.error || 'Eroare la actualizare. Ai introdus parola curentă corect?');
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  // Funcția de Ștergere Cont
+  const handleDeleteAccount = async () => {
+    setDeleteError(''); // Resetăm eroarea
+
+    if (!deletePassword) {
+      setDeleteError('Te rugăm să introduci parola pentru a putea șterge contul!');
+      return;
+    }
+
+    const confirmDelete = window.confirm("Ești sigur că vrei să îți ștergi contul? Această acțiune este permanentă și nu poate fi anulată!");
+    
+    if (!confirmDelete) return;
+
+    try {
+      // Pentru axios.delete cu un "body", folosim proprietatea "data"
+      await axios.delete('/api/auth/delete', {
+        data: {
+          email: userData.email,
+          password: deletePassword
+        }
+      });
+      
+      localStorage.removeItem('userEmail');
+      navigate('/login');
+    } catch (err) {
+      setDeleteError(err.response?.data?.error || 'Eroare la ștergerea contului.');
     }
   };
 
@@ -174,6 +207,35 @@ function Dashboard() {
               {isUpdating ? 'Se salvează...' : 'Salvează Modificările'}
             </button>
           </form>
+        </div>
+        {/* SECȚIUNEA 3: Ștergere Cont (Danger Zone) */}
+        <div className="dash-card danger-zone">
+          <h3 style={{ color: '#c53030', borderBottomColor: '#fed7d7' }}>Ștergere Cont</h3>
+          <p style={{ fontSize: '14px', color: '#4a5568', marginBottom: '15px' }}>
+            Odată ce îți ștergi contul, nu mai există cale de întoarcere. Introdu parola pentru confirmare.
+          </p>
+
+          {/* Afișăm eroarea dacă a greșit parola la ștergere */}
+          {deleteError && <div className="dash-alert dash-alert-error">{deleteError}</div>}
+
+          <div className="dash-form-group">
+            <label>Parola ta (Obligatoriu)</label>
+            <input 
+              className="dash-form-control"
+              type="password" 
+              value={deletePassword} 
+              onChange={(e) => setDeletePassword(e.target.value)} 
+              placeholder="Introdu parola pentru a confirma" 
+              maxLength="128"
+            />
+          </div>
+
+          <button 
+            onClick={handleDeleteAccount} 
+            className="btn-delete-account"
+          >
+            Șterge Contul Definitiv
+          </button>
         </div>
 
       </div>

@@ -91,4 +91,18 @@ public class UserService {
         userRepository.save(user);
         System.out.println("Profil actualizat cu succes pentru: " + email);
     }
+
+    // --- ȘTERGERE UTILIZATOR ---
+    public void deleteUser(String email, String rawPassword) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            
+        // Verificăm dacă parola introdusă este corectă
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            throw new RuntimeException("Eroare: Parola incorectă! Contul nu a fost șters.");
+        }
+            
+        userRepository.delete(user);
+        System.out.println("Cont șters cu succes pentru: " + email);
+    }
 }

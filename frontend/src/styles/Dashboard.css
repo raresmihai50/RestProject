@@ -167,3 +167,31 @@
   color: #2f855a;
   border: 1px solid #9ae6b4;
 }
+
+/* --- Buton Ștergere Cont --- */
+.danger-zone {
+  border: 1px solid #fed7d7;
+  background-color: #fffaf0;
+  margin-top: 20px;
+}
+
+.btn-delete-account {
+  width: 100%;
+  background-color: #e53e3e;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-delete-account:hover {
+  background-color: #c53030;
+}
+
+.btn-delete-account:active {
+  transform: scale(0.98);
+}

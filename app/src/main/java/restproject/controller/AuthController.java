@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import restproject.domain.User;
 import restproject.dto.LoginRequest;
@@ -83,6 +84,21 @@ public class AuthController {
                 request.getNewPassword()
             );
             return ResponseEntity.ok(Map.of("message", "Profil actualizat cu succes!"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // --- ȘTERGERE CONT ---
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteAccount(@RequestBody Map<String, String> payload) {
+        try {
+            String email = payload.get("email");
+            String password = payload.get("password");
+            
+            // Apelăm metoda actualizată care cere și parola
+            userService.deleteUser(email, password);
+            return ResponseEntity.ok(Map.of("message", "Contul a fost șters cu succes!"));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
