@@ -1,8 +1,14 @@
 package restproject.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class UpdateRequest {
     
+    @NotBlank(message = "Email-ul este obligatoriu pentru identificare!")
+    @Email(message = "Format email invalid.")
     private String email;
+    @NotBlank(message = "Trebuie să introduci parola curentă pentru a face modificări!")
     private String currentPassword;
     private String newUsername;
     private String newPassword;

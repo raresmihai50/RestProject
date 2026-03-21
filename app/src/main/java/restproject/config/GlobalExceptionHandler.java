@@ -5,7 +5,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.server.ResponseStatusException; // <-- Import nou
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +30,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {
         // ex.getStatusCode() va returna automat 404, 403 etc., în funcție de ce setăm noi în Service
         // ex.getReason() este mesajul de eroare propriu-zis
-        return ResponseEntity.status(ex.getStatusCode()).body(Map.of("error", ex.getReason()));
+        //return ResponseEntity.status(ex.getStatusCode()).body(Map.of("error", ex.getReason())); //varianta 1
+        return ResponseEntity
+            .status(ex.getStatusCode())
+            .body(Map.of("error", ex.getReason() != null ? ex.getReason() : "Eroare neprevăzută")); //varianta 2 (în caz că nu setăm un mesaj de eroare, să avem totuși un răspuns decent)
+
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import restproject.domain.User;
 import restproject.dto.UpdateRequest;
@@ -41,7 +42,7 @@ public class UserController {
 
     // --- ACTUALIZARE PROFIL ---
     @PostMapping("/update") // (Alternativ, aici se folosește adesea @PutMapping)
-    public ResponseEntity<?> updateProfile(@RequestBody UpdateRequest request) {
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody UpdateRequest request) {
         try {
             userService.updateUser(
                 request.getEmail(), 

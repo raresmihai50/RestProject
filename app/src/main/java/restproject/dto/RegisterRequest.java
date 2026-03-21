@@ -7,15 +7,16 @@ import jakarta.validation.constraints.Size;
 public class RegisterRequest {
     
     @NotBlank(message = "Numele de utilizator este obligatoriu!")
-    @Size(min = 3, max = 50, message = "Numele trebuie să aibă între 3 și 50 de caractere.")
+    @Size(min = 1, max = 128, message = "Numele trebuie să aibă între 1 și maximum 128 de caractere.")
     private String username;
 
     @NotBlank(message = "Email-ul este obligatoriu!")
     @Email(message = "Te rugăm să introduci o adresă de email validă!")
+    @Size(max = 128, message = "Email-ul trebuie să aibă maximum 128 de caractere.")
     private String email;
 
     @NotBlank(message = "Parola este obligatorie!")
-    @Size(min = 4, message = "Parola trebuie să aibă minim 4 caractere pentru securitate.")
+    @Size(min = 4, max = 128, message = "Parola trebuie să aibă minim 4 și maximum 128 de caractere.")
     private String password;
 
     // --- Getters ---

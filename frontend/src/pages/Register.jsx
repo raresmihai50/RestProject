@@ -1,36 +1,44 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import '../styles/Login.css'; 
+import '../styles/Login.css';
 
 function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
-    setMessage('');
-    setIsLoading(true);
+    setSuccess('');
 
     try {
-      await axios.post('/api/auth/register', { username, email, password });
-      
-      setMessage('Cont creat cu succes! Te redirecționăm la login...');
-      
-      setTimeout(() => {
-        navigate('/login'); 
-      }, 1500);
+      await axios.post('/api/auth/register', {
+        username,
+        email,
+        password,
+      });
 
+      setSuccess('Cont creat cu succes! Te redirecționăm la login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.response?.data?.error || 'Eroare la înregistrare. Verifică datele.');
-      setIsLoading(false);
+      if (err.response && err.response.data) {
+        // Cazul 1: Erori de validare multiple (trimise de GlobalExceptionHandler pentru @Valid)
+        if (typeof err.response.data === 'object' && !err.response.data.error) {
+          const messages = Object.values(err.response.data).join('\n');
+          setError(messages);
+        } 
+        // Cazul 2: Eroare specifică de logică (ex: Email deja folosit)
+        else if (err.response.data.error) {
+          setError(err.response.data.error);
+        }
+      } else {
+        setError('A apărut o eroare la conexiunea cu serverul.');
+      }
     }
   };
 
@@ -38,73 +46,56 @@ function Register() {
     <div className="login-wrapper">
       <div className="login-card">
         <div className="login-header">
-          <h2 className="login-title">Creează un cont nou 🚀</h2>
-          <p className="login-subtitle">Alătură-te comunității noastre</p>
+          <h2 className="login-title">Creare Cont</h2>
+          <p className="login-subtitle">Completează datele de mai jos</p>
         </div>
-        
-        {error && <div className="alert alert-error">{error}</div>}
-        {message && <div className="alert alert-success">{message}</div>}
+
+        {/* Afișare erori cu suport pentru linii multiple */}
+        {error && <div className="alert alert-error" style={{ whiteSpace: 'pre-line' }}>{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
 
         <form onSubmit={handleRegister}>
           <div className="form-group">
             <label>Nume de utilizator</label>
-            <input 
+            <input
+              type="text"
               className="form-control"
-              type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              placeholder="ex: raresmihai" 
-              maxLength="50"
-              required 
+              placeholder="Minim 3 caractere"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              maxLength="128"
+              required
             />
           </div>
-
           <div className="form-group">
             <label>Email</label>
-            <input 
+            <input
+              type="email"
               className="form-control"
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              placeholder="nume@exemplu.ro" 
-              maxLength="255"
-              required 
+              placeholder="exemplu@mail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              maxLength="128"
+              required
             />
           </div>
-          
           <div className="form-group">
             <label>Parolă</label>
-            <input 
+            <input
+              type="password"
               className="form-control"
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              placeholder="••••••••" 
+              placeholder="Minim 3 caractere"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               maxLength="128"
-              required 
-              /* Am șters linia cu minLength="6" de aici! Acum acceptă orice parolă. */
+              required
             />
           </div>
-          
-          <button 
-            type="submit" 
-            className="btn-login"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Se creează contul...' : 'Înregistrează-te'}
-          </button>
+          <button type="submit" className="btn-login">Înregistrare</button>
         </form>
-        
+
         <div className="login-footer">
-          <p style={{ margin: 0 }}>
-            Ai deja un cont?
-            <button 
-              onClick={() => navigate('/login')} 
-              className="login-link"
-            >
-              Intră în cont
-            </button>
-          </p>
+          Ai deja un cont? <Link to="/login" className="login-link">Autentifică-te</Link>
         </div>
       </div>
     </div>
