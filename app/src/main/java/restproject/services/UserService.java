@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import restproject.domain.User;
 import restproject.repo.UserRepository;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 @Service
 public class UserService {
 
@@ -22,10 +25,12 @@ public class UserService {
     // --- ÎNREGISTRAREA ---
     public User registerUser(String username, String email, String rawPassword) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Eroare: Acest username este deja folosit!");
+            //throw new RuntimeException("Eroare: Acest username este deja folosit!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username-ul este deja folosit!");
         }
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Eroare: Acest email este deja folosit!");
+            //throw new RuntimeException("Eroare: Acest email este deja folosit!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email-ul este deja folosit!");
         }
 
         // Criptăm parola
@@ -43,13 +48,15 @@ public class UserService {
     public void loginUser(String email, String rawPassword) {
         // 1. Căutăm userul după email
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Eroare: Nu există niciun cont cu acest email."));
+            //.orElseThrow(() -> new RuntimeException("Eroare: Nu există niciun cont cu acest email."));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilizatorul nu a fost găsit!"));
 
         // 2. Verificăm dacă parola introdusă se potrivește cu cea criptată din baza de date
         boolean passwordMatches = passwordEncoder.matches(rawPassword, user.getPassword());
         
         if (!passwordMatches) {
-            throw new RuntimeException("Eroare: Parola este incorectă!");
+            //throw new RuntimeException("Eroare: Parola este incorectă!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Parola este incorectă!");
         }
 
         // Dacă ajungem aici, logarea este ok! Nu trebuie să returnăm nimic special
@@ -59,25 +66,29 @@ public class UserService {
     // --- PRELUARE DATE UTILIZATOR (PENTRU DASHBOARD) ---
     public User getUserDetails(String email) {
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            //.orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilizatorul nu a fost găsit!"));
     }
 
     // --- ACTUALIZARE PROFIL ---
     public void updateUser(String email, String currentPassword, String newUsername, String newPassword) {
         // 1. Găsim userul
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            //.orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilizatorul nu a fost găsit!"));
 
         // 2. Verificăm dacă parola curentă introdusă este corectă (ca măsură de securitate)
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new RuntimeException("Eroare: Parola curentă este incorectă!");
+            //throw new RuntimeException("Eroare: Parola curentă este incorectă!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Parola curentă este incorectă!");
         }
 
         // 3. Dacă a introdus un username nou, îl actualizăm
         if (newUsername != null && !newUsername.trim().isEmpty()) {
             // Verificăm mai întâi să nu fie luat deja de altcineva
             if (!newUsername.equals(user.getUsername()) && userRepository.findByUsername(newUsername).isPresent()) {
-                throw new RuntimeException("Eroare: Acest username este deja folosit!");
+                //throw new RuntimeException("Eroare: Acest username este deja folosit!");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Username-ul este deja folosit!");
             }
             user.setUsername(newUsername);
         }
@@ -95,11 +106,13 @@ public class UserService {
     // --- ȘTERGERE UTILIZATOR ---
     public void deleteUser(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            //.orElseThrow(() -> new RuntimeException("Eroare: Utilizatorul nu a fost găsit!"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Utilizatorul nu a fost găsit!"));
             
         // Verificăm dacă parola introdusă este corectă
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
-            throw new RuntimeException("Eroare: Parola incorectă! Contul nu a fost șters.");
+            //throw new RuntimeException("Eroare: Parola incorectă! Contul nu a fost șters.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Parola incorectă! Contul nu a fost șters.");
         }
             
         userRepository.delete(user);

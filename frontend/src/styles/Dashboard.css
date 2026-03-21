@@ -63,6 +63,13 @@
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
+.dash-card h2 {
+  margin-top: 0;
+  color: #4a5568;
+  border-bottom: 2px solid #edf2f7;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
 
 /* --- Informații Cont --- */
 .dash-info-group {
@@ -154,6 +161,7 @@
   text-align: center;
   font-size: 14px;
   font-weight: 500;
+  white-space: pre-line;
 }
 
 .dash-alert-error {

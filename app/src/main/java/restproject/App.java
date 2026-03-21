@@ -42,7 +42,7 @@ public class App {
                 System.out.println("Eroare la test: " + e.getMessage());
             }
 
-            System.out.println("Verifică acum tabelul 'users' în baza de date!");
+            System.out.println("Verifica acum tabelul 'users' in baza de date!");
         };
     }
 }

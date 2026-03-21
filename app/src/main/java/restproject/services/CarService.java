@@ -1,6 +1,9 @@
 package restproject.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import restproject.domain.Car;
 import restproject.domain.User;
 import restproject.repo.CarRepository;
@@ -45,11 +48,13 @@ public class CarService {
     // UPDATE (Actualizează o mașină existentă)
     public Car updateCar(Long carId, String email, CarRequest request) {
         Car car = carRepository.findById(carId)
-            .orElseThrow(() -> new RuntimeException("Mașina nu a fost găsită!"));
+            //.orElseThrow(() -> new RuntimeException("Mașina nu a fost găsită!"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mașina nu a fost găsită!"));
 
         // Verificare de securitate: Doar proprietarul poate modifica mașina
         if (!car.getUser().getEmail().equals(email)) {
-            throw new RuntimeException("Nu ai permisiunea să modifici această mașină!");
+            //throw new RuntimeException("Nu ai permisiunea să modifici această mașină!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nu ai permisiunea să modifici această mașină!");
         }
 
         car.setBrand(request.getBrand());
@@ -64,11 +69,13 @@ public class CarService {
     // DELETE (Șterge o mașină)
     public void deleteCar(Long carId, String email) {
         Car car = carRepository.findById(carId)
-            .orElseThrow(() -> new RuntimeException("Mașina nu a fost găsită!"));
+            //.orElseThrow(() -> new RuntimeException("Mașina nu a fost găsită!"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mașina nu a fost găsită!"));
 
         // Verificare de securitate
         if (!car.getUser().getEmail().equals(email)) {
-            throw new RuntimeException("Nu ai permisiunea să ștergi această mașină!");
+            //throw new RuntimeException("Nu ai permisiunea să ștergi această mașină!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Nu ai permisiunea să ștergi această mașină!");
         }
 
         User user = car.getUser();

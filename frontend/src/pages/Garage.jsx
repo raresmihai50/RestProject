@@ -89,7 +89,20 @@ function Garage() {
       resetCarForm();
       fetchMyCars(userData.email);
     } catch (err) {
-      setCarError(err.response?.data?.error || 'Eroare la salvarea mașinii.');
+      if (err.response && err.response.data) {
+        // Dacă e o eroare generală setată de noi manual (Map.of("error", "..."))
+        if (err.response.data.error) {
+          setCarError(err.response.data.error);
+        } 
+        // Dacă e o eroare de validare de la @Valid (care returnează mai multe mesaje)
+        else if (typeof err.response.data === 'object') {
+          // Luăm toate mesajele de eroare din JSON și le unim cu un "Enter" între ele
+          const errorMessages = Object.values(err.response.data).join('\n');
+          setCarError(errorMessages);
+        }
+      } else {
+        setCarError('Eroare de conexiune la server.');
+      }
     }
   };
 
@@ -122,7 +135,7 @@ function Garage() {
 
       <div className="dashboard-content">
         <div className="dash-card garage-section" style={{ flexBasis: '100%' }}>
-          <h2>Gestionează Flota</h2>
+          <h2>Gestionează Garajul</h2>
           
           {carError && <div className="dash-alert dash-alert-error">{carError}</div>}
           {carMessage && <div className="dash-alert dash-alert-success">{carMessage}</div>}

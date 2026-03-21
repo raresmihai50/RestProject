@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import restproject.dto.LoginRequest;
 import restproject.dto.RegisterRequest; 
@@ -24,7 +25,7 @@ public class AuthController {
 
     // --- ÎNREGISTRARE ---
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         try {
             userService.registerUser(
                 request.getUsername(),
@@ -39,7 +40,7 @@ public class AuthController {
 
     // --- AUTENTIFICARE ---
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         try {
             userService.loginUser(request.getEmail(), request.getPassword());
             return ResponseEntity.ok(Map.of("message", "Autentificare cu succes!"));

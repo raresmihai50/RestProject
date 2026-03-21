@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restproject.dto.CarRequest;
 import restproject.services.CarService;
+import jakarta.validation.Valid;
 
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class CarController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addCar(@RequestBody CarRequest request) {
+    public ResponseEntity<?> addCar(@Valid @RequestBody CarRequest request) {
         try {
             carService.addCar(request);
             return ResponseEntity.ok(Map.of("message", "Mașina a fost adăugată în garaj!"));
