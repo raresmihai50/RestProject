@@ -68,6 +68,8 @@ public class CarTest {
 
         Car myCar = carService.addCar(createCarRequest("u1@test.com", "Dacia", "Logan"));
 
+        carService.updateCar(myCar.getId(), "u1@test.com", createCarRequest("u1@test.com", "Dacia", "Logan Updated"));
+
         // User2 încearcă să modifice mașina lui User1 (ar trebui să crape!)
         CarRequest hackerRequest = createCarRequest("u2@test.com", "Ferrari", "Enzo");
         
@@ -80,13 +82,28 @@ public class CarTest {
 
     @Test
     void testCascadeDelete_UserToCars() {
-        // ACESTA ESTE TESTUL CARE VERIFICĂ CASCADE DELETE-UL!
+        // ACESTA ESTE TESTUL CARE VERIFICĂ CASCADE DELETE-UL SI DELETE-UL!
         
         // 1. Creăm un user
         userService.registerUser("deleteMe", "delete@test.com", "pass");
         
         // 2. Îi adăugăm o mașină
         Car savedCar = carService.addCar(createCarRequest("delete@test.com", "Mercedes", "C Class"));
+        Car toDeleteCar = carService.addCar(createCarRequest("delete@test.com", "Mercedes", "E Class"));
+        assertTrue(carRepository.findById(toDeleteCar.getId()).isPresent(), "Mașina ar trebui să fie salvată în baza de date");
+        try
+            {carService.deleteCar(toDeleteCar.getId(), "fake@test.com");
+        }catch(Exception e){
+                    assertTrue(e.getMessage().contains("Nu ai permisiunea să ștergi această mașină!"), "Ar trebui să primim o eroare de permisiune când încercăm să ștergem cu email greșit");
+        } // Ar trebui să dea eroare pentru că emailul nu e al proprietarului
+        // Verificăm că nu s-a șters mașina și că am primit eroarea de permisiune, acelasi test ca cel de mai sus dar scris altfel
+        Exception ex = assertThrows(RuntimeException.class, () -> {
+            carService.deleteCar(toDeleteCar.getId(), "fake@test.com");
+        });
+        assertTrue(ex.getMessage().contains("Nu ai permisiunea să ștergi această mașină!"), "Ar trebui să primim o eroare de permisiune când încercăm să ștergem cu email greșit");
+        assertTrue(carRepository.findById(toDeleteCar.getId()).isPresent(), "Mașina ar trebui să fie salvată inca în baza de date");
+        carService.deleteCar(toDeleteCar.getId(), "delete@test.com");
+        assertFalse(carRepository.findById(toDeleteCar.getId()).isPresent(), "Mașina ar trebui să fie ștearsă după deleteCar");
         
         // Verificăm că mașina chiar a fost salvată în baza de date
         assertTrue(carRepository.findById(savedCar.getId()).isPresent());

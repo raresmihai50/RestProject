@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
+    jacoco
 }
 
 group = "com.restproject"
@@ -40,4 +41,12 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // Raportul are nevoie ca testele să ruleze primele
+    reports {
+        xml.required.set(true) // Coverage Gutters citește fișiere XML
+        html.required.set(true) // Opțional, generează și un raport HTML fain
+    }
 }
