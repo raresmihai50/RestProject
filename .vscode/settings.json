@@ -14,5 +14,6 @@
             "username": "restproject_user",
             "password": "1221"
         }
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

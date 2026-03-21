@@ -33,7 +33,7 @@ public class CarService {
             request.getHorsepower()
         );
         car.setUser(user);
-
+        user.getCars().add(car);
         return carRepository.save(car);
     }
 
@@ -70,6 +70,9 @@ public class CarService {
         if (!car.getUser().getEmail().equals(email)) {
             throw new RuntimeException("Nu ai permisiunea să ștergi această mașină!");
         }
+
+        User user = car.getUser();
+        user.getCars().remove(car);
 
         carRepository.delete(car);
     }
