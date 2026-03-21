@@ -32,7 +32,7 @@ function Dashboard() {
       }
 
       try {
-        const response = await axios.get(`/api/auth/me?email=${email}`);
+        const response = await axios.get(`/api/users/me?email=${email}`);
         setUserData(response.data);
       } catch (err) {
         console.error("Eroare la preluarea datelor:", err);
@@ -63,7 +63,7 @@ function Dashboard() {
     setIsUpdating(true);
 
     try {
-      await axios.post('/api/auth/update', {
+      await axios.post('/api/users/update', {
         email: userData.email,
         currentPassword: currentPassword,
         newUsername: newUsername,
@@ -102,7 +102,7 @@ function Dashboard() {
 
     try {
       // Pentru axios.delete cu un "body", folosim proprietatea "data"
-      await axios.delete('/api/auth/delete', {
+      await axios.delete('/api/users/delete', {
         data: {
           email: userData.email,
           password: deletePassword
