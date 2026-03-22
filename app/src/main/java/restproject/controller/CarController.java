@@ -38,7 +38,7 @@ public class CarController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateCar(@PathVariable Long id, @RequestBody CarRequest request) {
+    public ResponseEntity<?> updateCar(@Valid @PathVariable Long id, @RequestBody CarRequest request) {
         try {
             carService.updateCar(id, request.getEmail(), request);
             return ResponseEntity.ok(Map.of("message", "Detaliile mașinii au fost actualizate!"));

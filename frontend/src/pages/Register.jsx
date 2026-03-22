@@ -60,7 +60,7 @@ function Register() {
             <input
               type="text"
               className="form-control"
-              placeholder="Minim 3 caractere"
+              placeholder="Minim 1 caracter"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               maxLength="128"
@@ -84,7 +84,7 @@ function Register() {
             <input
               type="password"
               className="form-control"
-              placeholder="Minim 3 caractere"
+              placeholder="Minim 4 caractere"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               maxLength="128"

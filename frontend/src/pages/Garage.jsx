@@ -147,23 +147,23 @@ function Garage() {
               <form onSubmit={handleSaveCar}>
                 <div className="dash-form-group">
                   <label>Marcă (Brand)</label>
-                  <input type="text" name="brand" className="dash-form-control" value={carForm.brand} onChange={handleCarFormChange} required maxLength="50" placeholder="ex: BMW" />
+                  <input type="text" name="brand" className="dash-form-control" value={carForm.brand} onChange={handleCarFormChange} required maxLength="128" placeholder="ex: BMW" />
                 </div>
                 <div className="dash-form-group">
                   <label>Model</label>
-                  <input type="text" name="model" className="dash-form-control" value={carForm.model} onChange={handleCarFormChange} required maxLength="50" placeholder="ex: Seria 3" />
+                  <input type="text" name="model" className="dash-form-control" value={carForm.model} onChange={handleCarFormChange} required maxLength="128" placeholder="ex: Seria 3" />
                 </div>
                 <div className="dash-form-group">
                   <label>An Fabricație</label>
-                  <input type="number" name="fabricationYear" className="dash-form-control" value={carForm.fabricationYear} onChange={handleCarFormChange} required min="1886" max="2025" placeholder="ex: 2015" />
+                  <input type="number" name="fabricationYear" className="dash-form-control" value={carForm.fabricationYear} onChange={handleCarFormChange} required min="1800" max="9999" placeholder="ex: 2015" />
                 </div>
                 <div className="dash-form-group">
                   <label>Capacitate Cilindrică (cm3)</label>
-                  <input type="number" step="0.1" name="engineCapacity" className="dash-form-control" value={carForm.engineCapacity} onChange={handleCarFormChange} required placeholder="ex: 1995" />
+                  <input type="number" step="0.1" name="engineCapacity" className="dash-form-control" value={carForm.engineCapacity} onChange={handleCarFormChange} required min="0" max="100000" placeholder="ex: 1995" />
                 </div>
                 <div className="dash-form-group">
                   <label>Putere (CP)</label>
-                  <input type="number" name="horsepower" className="dash-form-control" value={carForm.horsepower} onChange={handleCarFormChange} required placeholder="ex: 190" />
+                  <input type="number" name="horsepower" className="dash-form-control" value={carForm.horsepower} onChange={handleCarFormChange} required min="1" max="100000" placeholder="ex: 190" />
                 </div>
                 
                 <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>

@@ -270,6 +270,12 @@
   font-size: 18px;
   border-bottom: 1px solid #edf2f7;
   padding-bottom: 8px;
+  /* 1. Forțează cuvintele lungi să se rupă și să treacă pe rândul următor */
+  word-wrap: break-word; 
+  /* 2. (Opțional, dar recomandat) Dacă browserul suportă, pune cratimă la despărțirea în silabe */
+  hyphens: auto;
+  /* 3. Previne textul să se comporte ca o singură linie continuă */
+  white-space: normal;
 }
 
 .car-details p {

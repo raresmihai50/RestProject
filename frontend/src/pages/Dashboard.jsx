@@ -53,17 +53,32 @@ function Dashboard() {
     }
     setIsUpdating(true);
     try {
-      await axios.post('/api/users/update', {
+      // Construim pachetul de date dinamic.
+      // Adăugăm username și password DOAR dacă nu sunt goale.
+      const payload = {
         email: userData.email,
-        currentPassword: currentPassword,
-        newUsername: newUsername,
-        newPassword: newPassword
-      });
+        currentPassword: currentPassword
+      };
+      if (newUsername.trim() !== '') payload.newUsername = newUsername;
+      if (newPassword !== '') payload.newPassword = newPassword;
+
+      await axios.put('/api/users/update', payload);
+      
       setMessage('Profil actualizat cu succes!');
       if (newUsername) setUserData({ ...userData, username: newUsername });
       setCurrentPassword(''); setNewUsername(''); setNewPassword(''); setConfirmNewPassword('');
     } catch (err) {
-      setError(err.response?.data?.error || 'Eroare la actualizare. Parola e corectă?');
+      // CITIM ERORILE EXACT CA LA REGISTER:
+      if (err.response && err.response.data) {
+        if (typeof err.response.data === 'object' && !err.response.data.error) {
+          const messages = Object.values(err.response.data).join('\n');
+          setError(messages);
+        } else if (err.response.data.error) {
+          setError(err.response.data.error);
+        }
+      } else {
+        setError('Eroare la conexiunea cu serverul.');
+      }
     } finally {
       setIsUpdating(false);
     }
@@ -133,11 +148,11 @@ function Dashboard() {
             <hr style={{ border: '1px solid #edf2f7', margin: '20px 0' }} />
             <div className="dash-form-group">
               <label>Nume de utilizator nou (opțional)</label>
-              <input className="dash-form-control" type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} maxLength="50" />
+              <input className="dash-form-control" type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} maxLength="128" minLength="1" placeholder="Minim 1 caracter" />
             </div>
             <div className="dash-form-group">
               <label>Parolă nouă (opțional)</label>
-              <input className="dash-form-control" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} maxLength="128" />
+              <input className="dash-form-control" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} maxLength="128" minLength="4" placeholder="Minim 4 caractere" />
             </div>
             <div className="dash-form-group">
               <label>Confirmă parola nouă</label>

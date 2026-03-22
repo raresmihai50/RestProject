@@ -2,15 +2,21 @@ package restproject.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class UpdateRequest {
     
     @NotBlank(message = "Email-ul este obligatoriu pentru identificare!")
     @Email(message = "Format email invalid.")
     private String email;
+
     @NotBlank(message = "Trebuie să introduci parola curentă pentru a face modificări!")
     private String currentPassword;
+
+    @Size(min = 1, max = 128, message = "Numele nou trebuie să aibă între 1 și 128 de caractere.")
     private String newUsername;
+
+    @Size(min = 4, message = "Parola nouă trebuie să aibă minim 4 caractere pentru securitate.")
     private String newPassword;
 
     // --- Getters ---

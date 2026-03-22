@@ -1,7 +1,14 @@
 package restproject.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequest {
+    
+    @NotBlank(message = "Email-ul este obligatoriu!")
+    @Email(message = "Email invalid.")
     private String email;
+    @NotBlank(message = "Parola este obligatorie!")
     private String password;
 
     public String getEmail() { return email; }
